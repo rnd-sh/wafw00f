@@ -264,7 +264,7 @@ python3 -m pip install wafw00f
 ```
 or
 ```
-pip3 install wafw00f
+pip3 install wafw00f ipwhois requests
 ```
 
 ### Via Docker
@@ -280,19 +280,16 @@ docker run --rm -it wafw00f https://example.com
 ### From source
 > NOTE: Be careful to not break your system packages while installing wafw00f. Use venv as and when required.
 
-Clone the repository:
+Clone this repository:
 ```
-git clone https://github.com/enablesecurity/wafw00f.git
+git clone --branch terminal https://github.com/rnd-sh/wafw00f.git
 ```
 Then:
 ```
 cd wafw00f/
-python3 -m pip install .
-```
-
-Or, by using pipx directly:
-```
-pipx install git+https://github.com/EnableSecurity/wafw00f.git
+python3 -m venv .
+source bin/activate
+pip install -r requirements.txt
 ```
 
 ## Final Words
