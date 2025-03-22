@@ -29,7 +29,11 @@ setup(
     install_requires=[
         'requests',
         'requests[socks]',
-        'pluginbase'
+        'pluginbase',
+        'ipwhois',
+        'dnspython',
+        'chardet'
+        
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
