@@ -15,6 +15,9 @@ import re
 import sys
 import string
 import urllib.parse
+import socket
+import requests
+from ipwhois import IPWhois
 from collections import defaultdict
 from optparse import OptionParser
 
@@ -359,6 +362,30 @@ def getheaders(fn):
                 h, v = map(lambda x: x.strip(), _t)
                 headers[h] = v
     return headers
+    
+def enrich_with_ipinfo(url):
+    try:
+        hostname = urllib.parse.urlparse(url).hostname
+        ip = socket.gethostbyname(hostname)
+
+        # RDAP for subnet/org/country
+        obj = IPWhois(ip)
+        rdap = obj.lookup_rdap()
+        subnet = rdap.get('network', {}).get('cidr', 'N/A')
+        org = rdap.get('network', {}).get('name', 'N/A')
+        country = rdap.get('asn_country_code', 'N/A')
+
+        # ipinfo.io for city
+        resp = requests.get(f"https://ipinfo.io/{ip}/json")
+        geo = resp.json()
+        city = geo.get('city', 'N/A')
+
+        print("\n[+] Target IP Information:")
+        print(f"    IP Address : {ip}")
+        print(f"    Subnet     : {subnet}")
+        print(f"    Org        : {org}")
+        print(f"    Country    : {country}")
+        print(f"    City       : {city}\n")
 
 class RequestBlocked(Exception):
     pass
